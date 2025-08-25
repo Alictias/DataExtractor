@@ -23,7 +23,7 @@ namespace DataExtractor
             if (dlg.ShowDialog() == true)//caso a caixa abra
             {
                 imagePath = dlg.FileName;//caminho do arquivo
-                UploadedImage.Source = new BitmapImage(new Uri(imagePath));//
+                UploadedImage.Source = new BitmapImage(new Uri(imagePath));
                 ExtractedTextBox.Clear();//limpa a caixa de texto
             }
         }
@@ -32,31 +32,32 @@ namespace DataExtractor
         {
             try
             {
-                string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";
-                using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
+                string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";//caminho onde o tessdata se encontra, ferramenta responsavel pela leitura de imagens
+                //deve ser alterado depois para outros computadores
+                using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))  // inicializa o tesseract
 
 
-                using (var img = Pix.LoadFromFile(imagePath))
+                using (var img = Pix.LoadFromFile(imagePath)) //carrega a imagem selecionada num formato que o tesseract consegue ler
                 {
-                    using (var page = engine.Process(img))
+                    using (var page = engine.Process(img)) //processa a imagem
                     {
-                        var iterator = page.GetIterator();
-                        iterator.Begin();
+                        var iterator = page.GetIterator(); //serve para ler o resultado 
+                        iterator.Begin(); //inicializa a leitura
 
-                        string allWords = "";
+                        string allWords = "";//define uma variavel para guardar o resultado da leitura
                         do
                         {
-                            if (iterator.IsAtBeginningOf(PageIteratorLevel.Word))
+                            if (iterator.IsAtBeginningOf(PageIteratorLevel.Word))//checa se o iterator está no inicio de uma palavra
                             {
-                                string word = iterator.GetText(PageIteratorLevel.Word);
-                                if (!string.IsNullOrWhiteSpace(word))
+                                string word = iterator.GetText(PageIteratorLevel.Word);//captura a palavra
+                                if (!string.IsNullOrWhiteSpace(word))//se for diferente de null ou espaço vazio
                                 {
-                                    allWords += word + Environment.NewLine;
+                                    allWords += word + Environment.NewLine; //adiciona na variavel
                                 }
                             }
-                        } while (iterator.Next(PageIteratorLevel.Word));
+                        } while (iterator.Next(PageIteratorLevel.Word)); 
 
-                        ExtractedTextBox.Text = allWords;
+                        ExtractedTextBox.Text = allWords;//atualiza a caixa de texto 
                     }
                 }
 
