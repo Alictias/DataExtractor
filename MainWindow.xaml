@@ -6,9 +6,12 @@
         xmlns:local="clr-namespace:DataExtractor"
         mc:Ignorable="d"
         Title="Data Extractor" Height="450" Width="800"
-       WindowStartupLocation="CenterOwner"
-        WindowState="Maximized">
-
+        WindowStartupLocation="CenterOwner"
+        WindowState="Maximized"
+        KeyDown="Window_KeyDown"
+        Focusable="True"
+        Loaded="Window_Loaded">
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,12 +22,14 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
             <Button Content="Upload Image" Width="120" Margin="0,0,10,0" Click="UploadImage_Click"/>
             <Button  Content="Extract Text" Width="120" Click="ExtractText_Click"/>
+            <ComboBox Height="22" VerticalAlignment="Top" Width="111"/>
         </StackPanel>
 
         <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" />
 
-        <TextBox x:Name="ExtractedTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"
-                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="ExtractedTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"/>
+        
+        
     </Grid>
 
 </Window>
