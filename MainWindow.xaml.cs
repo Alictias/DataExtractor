@@ -24,8 +24,8 @@ namespace DataExtractor
             {"Tool", "Tool" }, {"SCREWO1","SCREW01"}, {"Tool03","Tool03"},
             { "82801", "B2B01" }, { "82802", "B2B02" }, { "82803", "B2B03" }, { "82804", "B2B04" },
             { "82805", "B2B05" }, { "82806", "B2B06" }, { "82807", "B2B07" }, { "82808", "B2B08" },
-            { "82809", "B2B09" }, { "82810", "B2B10" }, { "82811", "B2B11" },
-            { "55", "SS" }, { "HN", "HN" }, { "H_DIFF", "H_DIFF" }, { "Height", "HEIGHT" },
+            { "82809", "B2B09" }, { "82810", "B2B10" }, { "82811", "B2B11" },{"82B02_SS_1", "B2B02_SS_1" },{"82B01_H_DIFF","B2B01_H_DIFF"},            
+            { "55", "SS" }, { "HN", "HN" }, { "H_DIFF", "H_DIFF" }, { "Height", "HEIGHT" }, { "Calcul.", "Calculations"},
             { "step", "STEP" }, { "acstep", "STEP" }, { "Calcul..", "Calculations"}, { "Calcul", "Calculations"}, {"Aver...", "Average"}, {"aver...", "Average"}, 
             {"Aver..", "Average"}, {"aver..", "Average"},{ "Calcul...", "Calculations"},
             {"mmy", ""},{"mmp", ""},{"mmg", ""}, {"5CREW","SCREW"}, {"SCREWO3","SCREW03"}, {"5CREWO1", "SCREW01"},
@@ -147,7 +147,7 @@ namespace DataExtractor
 
                         //ExtractedTextBox.Text = allWords;//atualiza a caixa de texto 
 
-                        string csvColumns = "Tool, Test, Reading";
+                        string csvColumns = "Tool, Test, Type, Reading";
                         string processed = ProcessExtractedText(allWords);
                         MessageBox.Show(allWords);
                         ExtractedTextBox.Text = csvColumns;
@@ -175,6 +175,116 @@ namespace DataExtractor
             for (int i = 0; i < lines.Length - 1; i++)
             {
                 string originalLine = lines[i].Trim();
+
+                // Check if the line contains "Tool" or any known variation
+                bool isToolLine = corrections.Keys.Any(key => originalLine.Contains(key)) || originalLine.Contains("Tool");
+
+                if (isToolLine)
+                {
+                    // Apply corrections to the line
+                    string correctedLine = originalLine;
+                    foreach (var kvp in corrections)
+                    {
+                        correctedLine = correctedLine.Replace(kvp.Key, kvp.Value);
+                    }
+
+                    // Extract tool name
+                    Match toolMatch = Regex.Match(correctedLine, @"Tool\d{2}|Too\d{2}|To0\d{2}");
+                    string tool = toolMatch.Success ? toolMatch.Value : "[UNKNOWN TOOL]";
+
+                    // Extract test name
+                    
+                    string testName = correctedLine;
+
+                    if (toolMatch.Success)
+                    {
+                        int index = correctedLine.IndexOf(toolMatch.Value);
+                        testName = correctedLine.Substring(index + toolMatch.Value.Length).Trim(':', ' ', '(', ')');
+
+                        // Apply corrections to test name
+                        foreach (var kvp in corrections)
+                        {
+                            testName = testName.Replace(kvp.Key, kvp.Value);
+                        }
+
+                        if (!testName.EndsWith(")"))
+                        {
+                            testName += ")";
+                        }
+                    }
+                    // Try to extract value from next few lines
+                    string value = "[NO VALUE FOUND]";
+                    int linesUsed = 1;
+                    for (int j = 1; j <= 3 && (i + j) < lines.Length; j++)
+                    {
+                        string candidate = string.Join("", lines.Skip(i + 1).Take(j).Select(l => l.Trim()));
+                        foreach (var kvp in corrections)
+                        {
+                            candidate = candidate.Replace(kvp.Key, kvp.Value);
+                        }
+
+                        Match match = Regex.Match(candidate, @"-?\d+\.\d+");
+                        if (match.Success)
+                        {
+                            value = match.Value;
+                            linesUsed = j;
+                            break;
+                        }
+                    }
+
+                    //processedResults.Add($"{tool}, {testName}, {value}");
+
+//###########################################################################################
+                    string testType = "[UNKNOWN TYPE]";
+                    Match typeMatch = Regex.Match(testName, @"\((.*?)\)");
+                    if (typeMatch.Success)
+                    {
+                        testType = typeMatch.Groups[1].Value;
+
+                        // Normalize test type if it starts with "Calcu"
+                        if (Regex.IsMatch(testType, @"^Calcu", RegexOptions.IgnoreCase))
+                        {
+                            testType = "Calculations";
+                        }
+                        else if (Regex.IsMatch(testType, @"^Step", RegexOptions.IgnoreCase))
+                        {
+                            testType = "Step";
+                        }
+                        else if (Regex.IsMatch(testType, @"^Height", RegexOptions.IgnoreCase))
+                        {
+                            testType = "Height";
+                        }
+                        else if (Regex.IsMatch(testType, @"^Average", RegexOptions.IgnoreCase))
+                        {
+                            testType = "Average";
+                        }
+
+                        // Remove the type from the test name
+                        testName = Regex.Replace(testName, @"\s*\(.*?\)", "");
+                    }
+
+                    processedResults.Add($"{tool}, {testName}, {testType}, {value}");
+
+
+
+
+
+                    i += linesUsed; // Skip value lines
+                }
+            }
+
+            return string.Join(Environment.NewLine, processedResults);
+        }
+
+
+        private string ProcessExtractedText2(string rawText)
+        {
+            var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var processedResults = new List<string>();
+
+            for (int i = 0; i < lines.Length - 1; i++)
+            {
+                string originalLine = lines[i].Trim();
                 string nextLine = lines[i + 1].Trim();
 
                 // Check if the line contains "Tool" or any known variation
@@ -192,7 +302,7 @@ namespace DataExtractor
                     // Extract tool name
                     //Match toolMatch = Regex.Match(correctedLine, @"Tool\d{2}"); /primeira versão
                     Match toolMatch = Regex.Match(correctedLine, @"Tool\d{2}|Too\d{2}|To0\d{2}");
-
+                    
                     string tool = toolMatch.Success ? toolMatch.Value : "[UNKNOWN TOOL]";
 
                     // Try to extract test name (just take the part after the tool name)
@@ -210,17 +320,36 @@ namespace DataExtractor
                             testName += ")";
                         }
 
+                        if (testName.EndsWith("ations"))
+                        {
+                            testName = "Calculations)";
+                        }
+                        if (Regex.IsMatch(testName, @"Calcu\w*", RegexOptions.IgnoreCase))
+                        {
+                            testName = "Calculations";
+                        }
+
                     }
 
                     // Clean and extract value from next line
                     string cleanedValueLine = nextLine;
+
+                    string valueCandidate = nextLine;
+                    if (i + 2 < lines.Length)
+                        valueCandidate += lines[i + 2].Trim();
+                    if (i + 3 < lines.Length)
+                        valueCandidate += lines[i + 3].Trim();
+
                     foreach (var kvp in corrections)
                     {
-                        cleanedValueLine = cleanedValueLine.Replace(kvp.Key, kvp.Value);
+                        //cleanedValueLine = cleanedValueLine.Replace(kvp.Key, kvp.Value);
                         testName = testName.Replace(kvp.Key, kvp.Value);//segunda versão
+                        valueCandidate = valueCandidate.Replace(kvp.Key, kvp.Value);
                     }
 
-                    Match valueMatch = Regex.Match(cleanedValueLine, @"-?\d+(\.\d+)?");
+                    //Match valueMatch = Regex.Match(cleanedValueLine, @"-?\d+(\.\d+)?");
+                    Match valueMatch = Regex.Match(valueCandidate, @"-?\d+(\.\d+)?");
+
                     string value = valueMatch.Success ? valueMatch.Value : "[NO VALUE FOUND]";
 
                     processedResults.Add($"{tool}, {testName}, {value}");
