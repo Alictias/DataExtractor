@@ -26,8 +26,8 @@
         <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" />
 
         <TextBox x:Name="ExtractedTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"/>
-        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,10,22" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <ComboBox x:Name="progList" Margin="0,0,10,59" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
+        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,10,38" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="progList" Margin="0,0,10,71" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
             <ComboBoxItem Content="PROG_00"/>
             <ComboBoxItem Content="PROG_01"/>
             <ComboBoxItem Content="PROG_02"/>
@@ -40,7 +40,9 @@
             <ComboBoxItem Content="PROG_09"/>
             <ComboBoxItem Content="PROG_10"/>
         </ComboBox>
-        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,10,94" Grid.Row="2" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
+        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,10,99" Grid.Row="2" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
+        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,10,10" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="lastCsv" Content="Add to last CSV Created" HorizontalAlignment="Left" Margin="474,99,0,0" Grid.Row="2" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
 
 
     </Grid>
