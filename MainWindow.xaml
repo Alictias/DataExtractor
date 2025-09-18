@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataExtractor"
         mc:Ignorable="d"
-        Title="Data Extractor" Height="450" Width="800"
+        Title="Data Extractor" Height="791.833" Width="1406.833"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
         KeyDown="Window_KeyDown"
@@ -15,19 +15,64 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="151*"/>
+            <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Upload Image" Width="120" Margin="0,0,10,0" Click="UploadImage_Click"/>
-        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,664" Grid.RowSpan="2"/>
 
-        <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" />
+        <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" Margin="0,0,279,0" />
 
-        <TextBox x:Name="ExtractedTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"/>
-        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,10,38" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <ComboBox x:Name="progList" Margin="0,0,10,71" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
+
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,340,0">
+            <UniformGrid Columns="5" Margin="10" HorizontalAlignment="Stretch">
+                <!-- Slot 1 -->
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel>
+                        <Button Content="Clear" Click="ClearSlot1_Click" Height="20"/>
+                        <Button Content="Paste Here" Click="PasteToSlot1_Click" Height="20"/>
+                        <Image x:Name="ImageSlot1" Stretch="Uniform" Margin="10"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Slot 2 -->
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel>
+                        <Button Content="Clear" Click="ClearSlot2_Click" Height="20"/>
+                        <Button Content="Paste Here" Click="PasteToSlot2_Click" Height="20"/>
+                        <Image x:Name="ImageSlot2" Stretch="Uniform" Margin="10"/>
+                    </StackPanel>
+                </Border>
+                <!-- Slot 3 -->
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel>
+                        <Button Content="Clear" Click="ClearSlot3_Click" Height="20"/>
+                        <Button Content="Paste Here" Click="PasteToSlot3_Click" Height="20"/>
+                        <Image x:Name="ImageSlot3" Stretch="Uniform" Margin="10"/>
+                    </StackPanel>
+                </Border>
+                <!-- Slot 4 -->
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel>
+                        <Button Content="Clear" Click="ClearSlot4_Click" Height="20"/>
+                        <Button Content="Paste Here" Click="PasteToSlot4_Click" Height="20"/>
+                        <Image x:Name="ImageSlot4" Stretch="Uniform" Margin="10"/>
+                    </StackPanel>
+                </Border>
+                <!-- Slot 5 -->
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel>
+                        <Button Content="Clear" Click="ClearSlot5_Click" Height="20"/>
+                        <Button Content="Paste Here" Click="PasteToSlot5_Click" Height="20"/>
+                        <Image x:Name="ImageSlot5" Stretch="Uniform" Margin="10"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </ScrollViewer>
+
+        <TextBox x:Name="ExtractedTextBox" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,10,0,59" HorizontalAlignment="Right" Width="335"/>
+        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,0,31" Click="Button_Click" Grid.Row="1" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="progList" Margin="0,0,146,10" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
             <ComboBoxItem Content="PROG_00"/>
             <ComboBoxItem Content="PROG_01"/>
             <ComboBoxItem Content="PROG_02"/>
@@ -40,10 +85,9 @@
             <ComboBoxItem Content="PROG_09"/>
             <ComboBoxItem Content="PROG_10"/>
         </ComboBox>
-        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,10,99" Grid.Row="2" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
-        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,10,10" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <CheckBox x:Name="lastCsv" Content="Add to last CSV Created" HorizontalAlignment="Left" Margin="474,99,0,0" Grid.Row="2" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
-
+        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,144,31" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
+        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,0,10" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-18,11" Grid.Row="1" VerticalAlignment="Bottom" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
 
     </Grid>
 

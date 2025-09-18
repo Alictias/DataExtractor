@@ -18,7 +18,7 @@ namespace DataExtractor
     {
         private string imagePath;
 
-        private List<Image> pastedImages = new List<Image>();
+        private List<string> pastedImagePath = new List<string>();
         private const int MaxImages = 5;
 
 
@@ -71,29 +71,83 @@ namespace DataExtractor
         }
 
 
+        private void Window_KeyDown2(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+
+                if (Clipboard.ContainsImage())
+                {
+                    if (pastedImagePath.Count >= MaxImages)
+                    {
+                        MessageBox.Show("You can only paste up to 5 images.");
+                        return;
+                    }
+
+                    BitmapSource bitmapSource = Clipboard.GetImage();
+                    UploadedImage.Source = bitmapSource;
+
+                    string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"pastedImage_{pastedImagePath.Count + 1}.png");
+                    using (var fileStream = new FileStream(tempPath, FileMode.Create))
+                    {
+                        BitmapEncoder encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                        encoder.Save(fileStream);
+                    }
+
+                    pastedImagePath.Add(tempPath);
+                }
+            }
+        }
+
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 if (Clipboard.ContainsImage())
                 {
-                    BitmapSource bitmapSource = Clipboard.GetImage();
-                    UploadedImage.Source = bitmapSource;
+                    if (pastedImagePath.Count >= MaxImages)
+                    {
+                        MessageBox.Show("You can only paste up to 5 images.");
+                        return;
+                    }
 
-                    //save to temp file for ocr
-                    string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage.png");
+                    BitmapSource bitmapSource = Clipboard.GetImage();
+
+                    string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"pastedImage_{pastedImagePath.Count + 1}.png");
                     using (var fileStream = new FileStream(tempPath, FileMode.Create))
                     {
-
                         BitmapEncoder encoder = new PngBitmapEncoder();
                         encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
                         encoder.Save(fileStream);
-
                     }
 
-                    imagePath = tempPath;
-                    ExtractedTextBox.Clear();
+                    pastedImagePath.Add(tempPath);
 
+                    // Automatically assign to next available slot
+                    switch (pastedImagePath.Count)
+                    {
+                        case 1:
+                            ImageSlot1.Source = bitmapSource;
+                            break;
+                        case 2:
+                            ImageSlot2.Source = bitmapSource;
+                            break;
+                        case 3:
+                            ImageSlot3.Source = bitmapSource;
+                            break;
+                        case 4:
+                            ImageSlot4.Source = bitmapSource;
+                            break;
+                        case 5:
+                            ImageSlot5.Source = bitmapSource;
+                            break;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No image found in clipboard.");
                 }
             }
         }
@@ -118,51 +172,40 @@ namespace DataExtractor
             }
         }
 
-
-        private void ExtractText_Click(object sender, RoutedEventArgs e)//botão extract text
+        public void extractText()
         {
             try
             {
-                string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";//caminho onde o tessdata se encontra, ferramenta responsavel pela leitura de imagens
-                //deve ser alterado depois para outros computadores
-                using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))  // inicializa o tesseract
+                string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";
+                string csvColumns = "Tool, Test, Type, Reading";
+                ExtractedTextBox.Text = csvColumns + Environment.NewLine;
 
-
-                using (var img = Pix.LoadFromFile(imagePath)) //carrega a imagem selecionada num formato que o tesseract consegue ler
+                foreach (var imagePath in pastedImagePath)
                 {
-                    using (var page = engine.Process(img)) //processa a imagem
+                    using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
+                    using (var img = Pix.LoadFromFile(imagePath))
+                    using (var page = engine.Process(img))
                     {
-                        var iterator = page.GetIterator(); //serve para ler o resultado 
-                        iterator.Begin(); //inicializa a leitura
+                        var iterator = page.GetIterator();
+                        iterator.Begin();
 
-                        string allWords = "";//define uma variavel para guardar o resultado da leitura
+                        string allWords = "";
                         do
                         {
-                            if (iterator.IsAtBeginningOf(PageIteratorLevel.Word))//checa se o iterator está no inicio de uma palavra
+                            if (iterator.IsAtBeginningOf(PageIteratorLevel.Word))
                             {
-                                string word = iterator.GetText(PageIteratorLevel.Word);//captura a palavra
-                                if (!string.IsNullOrWhiteSpace(word))//se for diferente de null ou espaço vazio
+                                string word = iterator.GetText(PageIteratorLevel.Word);
+                                if (!string.IsNullOrWhiteSpace(word))
                                 {
-                                    allWords += word + Environment.NewLine; //adiciona na variavel
+                                    allWords += word + Environment.NewLine;
                                 }
                             }
                         } while (iterator.Next(PageIteratorLevel.Word));
 
-
-                        //ExtractedTextBox.Text = allWords;//atualiza a caixa de texto 
-
-                        string csvColumns = "Tool, Test, Type, Reading";
                         string processed = ProcessExtractedText(allWords);
-                        MessageBox.Show(allWords);
-                        ExtractedTextBox.Text = csvColumns;
-                        ExtractedTextBox.Text += Environment.NewLine + processed;
-                        
-                        //MessageBox.Show($"Processed output:\n{processed}");
-
-
+                        ExtractedTextBox.Text += processed + Environment.NewLine + Environment.NewLine;
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -170,6 +213,10 @@ namespace DataExtractor
             }
         }
 
+        private void ExtractText_Click(object sender, RoutedEventArgs e)
+        {
+            extractText();
+        }
 
         private string ProcessExtractedText(string rawText)
         {
@@ -236,9 +283,6 @@ namespace DataExtractor
                         }
                     }
 
-                    //processedResults.Add($"{tool}, {testName}, {value}");
-
-//###########################################################################################
                     string testType = "[UNKNOWN TYPE]";
                     Match typeMatch = Regex.Match(testName, @"\((.*?)\)");
                     if (typeMatch.Success)
@@ -281,88 +325,181 @@ namespace DataExtractor
         }
 
 
-        private string ProcessExtractedText2(string rawText)
+        private void PasteImageToSlot(int index, System.Windows.Controls.Image imageControl)
         {
-            var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            var processedResults = new List<string>();
-
-            for (int i = 0; i < lines.Length - 1; i++)
+            if (index < pastedImagePath.Count)
             {
-                string originalLine = lines[i].Trim();
-                string nextLine = lines[i + 1].Trim();
+                imageControl.Source = new BitmapImage(new Uri(pastedImagePath[index]));
+            }
+            else
+            {
+                MessageBox.Show($"No image available for slot {index + 1}.");
+            }
+        }
 
-                // Check if the line contains "Tool" or any known variation
-                bool isToolLine = corrections.Keys.Any(key => originalLine.Contains(key)) || originalLine.Contains("Tool");
 
-                if (isToolLine)
+        private void PasteToSlot1_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Clipboard.ContainsImage())
+            {
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                ImageSlot1.Source = bitmapSource;
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage_1.png");
+                using (var fileStream = new FileStream(tempPath, FileMode.Create))
                 {
-                    // Apply corrections to the line
-                    string correctedLine = originalLine;
-                    foreach (var kvp in corrections)
-                    {
-                        correctedLine = correctedLine.Replace(kvp.Key, kvp.Value);
-                    }
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(fileStream);
+                }
 
-                    // Extract tool name
-                    //Match toolMatch = Regex.Match(correctedLine, @"Tool\d{2}"); /primeira versão
-                    Match toolMatch = Regex.Match(correctedLine, @"Tool\d{2}|Too\d{2}|To0\d{2}");
-                    
-                    string tool = toolMatch.Success ? toolMatch.Value : "[UNKNOWN TOOL]";
-
-                    // Try to extract test name (just take the part after the tool name)
-                    string testName = correctedLine;
-                    string testType="";
-
-                    if (toolMatch.Success)
-                    {
-                        int index = correctedLine.IndexOf(toolMatch.Value);
-                        testName = correctedLine.Substring(index + toolMatch.Value.Length).Trim(':', ' ', '(', ')');
-
-                        // Ensure it ends with a closing parenthesis
-                        if (!testName.EndsWith(")"))
-                        {
-                            testName += ")";
-                        }
-
-                        if (testName.EndsWith("ations"))
-                        {
-                            testName = "Calculations)";
-                        }
-                        if (Regex.IsMatch(testName, @"Calcu\w*", RegexOptions.IgnoreCase))
-                        {
-                            testName = "Calculations";
-                        }
-
-                    }
-
-                    // Clean and extract value from next line
-                    string cleanedValueLine = nextLine;
-
-                    string valueCandidate = nextLine;
-                    if (i + 2 < lines.Length)
-                        valueCandidate += lines[i + 2].Trim();
-                    if (i + 3 < lines.Length)
-                        valueCandidate += lines[i + 3].Trim();
-
-                    foreach (var kvp in corrections)
-                    {
-                        //cleanedValueLine = cleanedValueLine.Replace(kvp.Key, kvp.Value);
-                        testName = testName.Replace(kvp.Key, kvp.Value);//segunda versão
-                        valueCandidate = valueCandidate.Replace(kvp.Key, kvp.Value);
-                    }
-
-                    //Match valueMatch = Regex.Match(cleanedValueLine, @"-?\d+(\.\d+)?");
-                    Match valueMatch = Regex.Match(valueCandidate, @"-?\d+(\.\d+)?");
-
-                    string value = valueMatch.Success ? valueMatch.Value : "[NO VALUE FOUND]";
-
-                    processedResults.Add($"{tool}, {testName}, {value}");
-                    i++; // Skip value line
+                if (pastedImagePath.Count >= 1)
+                {
+                    pastedImagePath[0] = tempPath;
+                }
+                else
+                {
+                    pastedImagePath.Add(tempPath);
                 }
             }
+            else
+            {
+                MessageBox.Show("No image found in clipboard.");
+            }
 
-            return string.Join(Environment.NewLine, processedResults);
+            //foPasteImageToSlot(0, ImageSlot1);
         }
+
+        private void PasteToSlot2_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Clipboard.ContainsImage())
+            {
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                ImageSlot2.Source = bitmapSource;
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage_2.png");
+                using (var fileStream = new FileStream(tempPath, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(fileStream);
+                }
+
+                if (pastedImagePath.Count >= 2)
+                {
+                    pastedImagePath[1] = tempPath;
+                }
+                else
+                {
+                    pastedImagePath.Add(tempPath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No image found in clipboard.");
+            }
+
+        }
+
+        private void PasteToSlot3_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Clipboard.ContainsImage())
+            {
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                ImageSlot3.Source = bitmapSource;
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage_3.png");
+                using (var fileStream = new FileStream(tempPath, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(fileStream);
+                }
+
+                if (pastedImagePath.Count >= 3)
+                {
+                    pastedImagePath[2] = tempPath;
+                }
+                else
+                {
+                    pastedImagePath.Add(tempPath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No image found in clipboard.");
+            }
+
+        }
+
+        private void PasteToSlot4_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Clipboard.ContainsImage())
+            {
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                ImageSlot4.Source = bitmapSource;
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage_4.png");
+                using (var fileStream = new FileStream(tempPath, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(fileStream);
+                }
+
+                if (pastedImagePath.Count >= 4)
+                {
+                    pastedImagePath[3] = tempPath;
+                }
+                else
+                {
+                    pastedImagePath.Add(tempPath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No image found in clipboard.");
+            }
+
+        }
+
+        private void PasteToSlot5_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Clipboard.ContainsImage())
+            {
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                ImageSlot5.Source = bitmapSource;
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "pastedImage_5.png");
+                using (var fileStream = new FileStream(tempPath, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(fileStream);
+                }
+
+                if (pastedImagePath.Count >= 5)
+                {
+                    pastedImagePath[4] = tempPath;
+                }
+                else
+                {
+                    pastedImagePath.Add(tempPath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No image found in clipboard.");
+            }
+
+        }
+
+
 
         public static string ReplaceInsensitive(string input, string oldValue, string newValue)
         {
@@ -382,6 +519,56 @@ namespace DataExtractor
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ClearSlot1_Click(object sender, RoutedEventArgs e)
+        {
+            ImageSlot1.Source = null;
+
+            if (pastedImagePath.Count >= 1)
+            {
+                pastedImagePath[0] = null;
+            }
+        }
+
+        private void ClearSlot2_Click(object sender, RoutedEventArgs e)
+        {
+            ImageSlot2.Source = null;
+
+            if (pastedImagePath.Count >= 2)
+            {
+                pastedImagePath[1] = null;
+            }
+        }
+
+        private void ClearSlot3_Click(object sender, RoutedEventArgs e)
+        {
+            ImageSlot3.Source = null;
+
+            if (pastedImagePath.Count >= 3)
+            {
+                pastedImagePath[2] = null;
+            }
+        }
+
+        private void ClearSlot4_Click(object sender, RoutedEventArgs e)
+        {
+            ImageSlot4.Source = null;
+
+            if (pastedImagePath.Count >= 4)
+            {
+                pastedImagePath[3] = null;
+            }
+        }
+
+        private void ClearSlot5_Click(object sender, RoutedEventArgs e)
+        {
+            ImageSlot5.Source = null;
+
+            if (pastedImagePath.Count >= 5)
+            {
+                pastedImagePath[4] = null;
+            }
         }
     }
 }
