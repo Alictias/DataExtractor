@@ -18,6 +18,10 @@ namespace DataExtractor
     {
         private string imagePath;
 
+        private List<Image> pastedImages = new List<Image>();
+        private const int MaxImages = 5;
+
+
         private readonly Dictionary<string, string> corrections = new Dictionary<string, string>
         {
             { "Tooi", "Tool" }, { "Too0", "Tool" }, { "To00", "Tool" }, { "Tooit", "Tool1" }, { "Tooi1", "Tool" },{"Tool0S","Tool05"},
@@ -365,6 +369,14 @@ namespace DataExtractor
             return System.Text.RegularExpressions.Regex.Replace(input, System.Text.RegularExpressions.Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

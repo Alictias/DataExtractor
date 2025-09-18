@@ -11,7 +11,7 @@
         KeyDown="Window_KeyDown"
         Focusable="True"
         Loaded="Window_Loaded">
-    
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,17 +19,30 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal">
             <Button Content="Upload Image" Width="120" Margin="0,0,10,0" Click="UploadImage_Click"/>
-            <Button  Content="Extract Text" Width="120" Click="ExtractText_Click"/>
-            <ComboBox Height="22" VerticalAlignment="Top" Width="111"/>
         </StackPanel>
 
         <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" />
 
         <TextBox x:Name="ExtractedTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"/>
-        
-        
+        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,10,22" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="progList" Margin="0,0,10,59" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
+            <ComboBoxItem Content="PROG_00"/>
+            <ComboBoxItem Content="PROG_01"/>
+            <ComboBoxItem Content="PROG_02"/>
+            <ComboBoxItem Content="PROG_03"/>
+            <ComboBoxItem Content="PROG_04"/>
+            <ComboBoxItem Content="PROG_05"/>
+            <ComboBoxItem Content="PROG_06"/>
+            <ComboBoxItem Content="PROG_07"/>
+            <ComboBoxItem Content="PROG_08"/>
+            <ComboBoxItem Content="PROG_09"/>
+            <ComboBoxItem Content="PROG_10"/>
+        </ComboBox>
+        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,10,94" Grid.Row="2" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
+
+
     </Grid>
 
 </Window>
