@@ -11,6 +11,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace DataExtractor
 {
@@ -258,10 +259,7 @@ namespace DataExtractor
                             testName = testName.Replace(kvp.Key, kvp.Value);
                         }
 
-                        if (!testName.EndsWith(")"))
-                        {
-                            testName += ")";
-                        }
+                        
                     }
                     // Try to extract value from next few lines
                     string value = "[NO VALUE FOUND]";
@@ -569,6 +567,61 @@ namespace DataExtractor
             {
                 pastedImagePath[4] = null;
             }
+        }
+
+        public void csvExport_method(string filePath)
+        {
+            
+            try
+            {
+                string selectedProg = (progList.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+
+                var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                using (var writer = new StreamWriter(filePath))
+                {
+                    string header = lines[0] + ",PROG";
+                    writer.WriteLine(header);
+
+                    foreach(var line in lines.Skip(1))
+                    {
+                        writer.WriteLine(line + "," + selectedProg);
+                    }
+                }
+
+                MessageBox.Show("CSV File exported Successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error exporting CSV: " + ex.Message);
+            }
+        }
+
+        private void csvExport_click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Save CSV file",
+                Filter = "CSV files (*.csv)|*.csv",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                FileName = "Exported_csv.csv"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                csvExport_method(dialog.FileName);
+            }
+
+        }
+
+        private void addCsv_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void processTxt_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -71,7 +71,7 @@
         </ScrollViewer>
 
         <TextBox x:Name="ExtractedTextBox" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,10,0,59" HorizontalAlignment="Right" Width="335"/>
-        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,0,31" Click="Button_Click" Grid.Row="1" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,0,31" Click="csvExport_click" Grid.Row="1" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
         <ComboBox x:Name="progList" Margin="0,0,146,10" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
             <ComboBoxItem Content="PROG_00"/>
             <ComboBoxItem Content="PROG_01"/>
@@ -86,8 +86,10 @@
             <ComboBoxItem Content="PROG_10"/>
         </ComboBox>
         <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,144,31" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
-        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,0,10" Click="Button_Click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-18,11" Grid.Row="1" VerticalAlignment="Bottom" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
+        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,0,10" Click="addCsv_click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-18,3" Grid.Row="1" VerticalAlignment="Bottom" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="processTxt"  Content="Process Text" Click="processTxt_Click" Margin="0,0,146,0" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
 
     </Grid>
 
