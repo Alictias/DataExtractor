@@ -180,9 +180,12 @@ namespace DataExtractor
             try
             {
                 string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";
-                string csvColumns = "Tool, Test, Type, Reading";
+                string csvColumns = "TOOL NO, TOOL NAME, RESULT, TEST, PROGRAM NO., TOOL STATUS, LOW LIMIT, HIGH LIMIT";
+                
+                string toolStatus = "Pass";
                 ExtractedTextBox.Text = csvColumns + Environment.NewLine;
 
+                
                 var validImages = pastedImagePath
                             .Where(path => !string.IsNullOrWhiteSpace(path) && File.Exists(path))
                             .ToList();
@@ -197,10 +200,53 @@ namespace DataExtractor
 
                 if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
 
-                foreach (var imagePath in pastedImagePath)
+                //foreach (var imagePath in pastedImagePath)
+                for (int i = 0; i < pastedImagePath.Count; i++)
                 {
+                    var imagePath = pastedImagePath[i];
+
+                    string selectedProg = "UNKNOWN";
+                    string selectedTest = "UNKNOWN";
+
+                    switch (i)
+                    {
+                        case 0: 
+                            { 
+                                selectedTest = (testList1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedProg = (progList1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                break;
+                            }
+
+                        case 1:
+                                {
+                                    selectedTest = (testList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                    selectedProg = (progList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                    break;
+                                }
+                        case 2:
+                            {
+                                selectedTest = (testList3.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedProg = (progList3.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                break;
+                            }
+
+                        case 3:
+                            {
+                                selectedTest = (testList4.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedProg = (progList4.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                break;
+                            }
+                        case 4:
+                            {
+                                selectedTest = (testList5.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedProg = (progList5.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                break;
+                            }
+
+                        }
+
                     if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
-                        continue;
+                    continue;
 
                     using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
                     using (var img = Pix.LoadFromFile(imagePath))
@@ -222,7 +268,7 @@ namespace DataExtractor
                             }
                         } while (iterator.Next(PageIteratorLevel.Word));
 
-                        string processed = ProcessExtractedText(allWords);
+                        string processed = ProcessExtractedText(allWords,  selectedProg, selectedTest, toolStatus);
                         ExtractedTextBox.Text += processed + Environment.NewLine + Environment.NewLine;
                     }
                 }
@@ -233,12 +279,8 @@ namespace DataExtractor
             }
         }
 
-        private void ExtractText_Click(object sender, RoutedEventArgs e)
-        {
-            extractText();
-        }
 
-        private string ProcessExtractedText(string rawText)
+        private string ProcessExtractedText(string rawText, string selectedProg,string selectedTest, string toolStatus)
         {
             var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var processedResults = new List<string>();
@@ -265,17 +307,17 @@ namespace DataExtractor
 
                     // Extract test name
                     
-                    string testName = correctedLine;
+                    string toolName = correctedLine;
 
                     if (toolMatch.Success)
                     {
                         int index = correctedLine.IndexOf(toolMatch.Value);
-                        testName = correctedLine.Substring(index + toolMatch.Value.Length).Trim(':', ' ', '(', ')');
+                        toolName = correctedLine.Substring(index + toolMatch.Value.Length).Trim(':', ' ', '(', ')');
 
                         // Apply corrections to test name
                         foreach (var kvp in corrections)
                         {
-                            testName = testName.Replace(kvp.Key, kvp.Value);
+                            toolName = toolName.Replace(kvp.Key, kvp.Value);
                         }
 
                         
@@ -300,8 +342,11 @@ namespace DataExtractor
                         }
                     }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
                     string testType = "[UNKNOWN TYPE]";
-                    Match typeMatch = Regex.Match(testName, @"\((.*?)\)");
+                    Match typeMatch = Regex.Match(toolName, @"\((.*?)\)");
                     if (typeMatch.Success)
                     {
                         testType = typeMatch.Groups[1].Value;
@@ -325,10 +370,14 @@ namespace DataExtractor
                         }
 
                         // Remove the type from the test name
-                        testName = Regex.Replace(testName, @"\s*\(.*?\)", "");
+                        toolName = Regex.Replace(toolName, @"\s*\(.*?\)", "");
                     }
 
-                    processedResults.Add($"{tool}, {testName}, {testType}, {value}");
+                    int ll = -20;
+                    int ul = 20;
+
+                    // string csvColumns = "TOOL NO, TOOL NAME, TYPE, RESULT, TEST, PROGRAM NO., TOOL STATUS, LOW LIMIT, HIGH LIMIT";
+                    processedResults.Add($"{tool}, {toolName}, {value}, {selectedTest}, {selectedProg}, {toolStatus}, {ll}, {ul}");
 
 
 
@@ -352,7 +401,10 @@ namespace DataExtractor
                 MessageBox.Show($"No image available for slot {index + 1}.");
             }
         }
-
+        private void ExtractText_Click(object sender, RoutedEventArgs e)
+        {
+            extractText();
+        }
 
         private void PasteToSlot1_Click(object sender, RoutedEventArgs e)
         {
@@ -584,7 +636,6 @@ namespace DataExtractor
            
             try
             {
-                string selectedProg = (progList.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                 var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 bool appendToLast = lastCsv.IsChecked == true && !string.IsNullOrEmpty(lastSavedCsvPath) && File.Exists(lastSavedCsvPath);
 
@@ -593,13 +644,13 @@ namespace DataExtractor
                     if (!appendToLast)
                     {
                         // Write header only if creating a new file
-                        string header = lines[0] + ",PROG";
+                        string header = lines[0];
                         writer.WriteLine(header);
                     }
 
                     foreach (var line in lines.Skip(1))
                     {
-                        writer.WriteLine(line + "," + selectedProg);
+                        writer.WriteLine(line);
                     }
                 }
 
@@ -660,7 +711,6 @@ namespace DataExtractor
 
             if (dialog.ShowDialog() == true)
             {
-                string selectedProg = (progList.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                 var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 try
@@ -669,7 +719,8 @@ namespace DataExtractor
                     {
                         foreach (var line in lines.Skip(1)) // Skip header
                         {
-                            writer.WriteLine(line + "," + selectedProg);
+                            //writer.WriteLine(line + "," + selectedProg);
+                            writer.WriteLine(line);
                         }
                     }
 

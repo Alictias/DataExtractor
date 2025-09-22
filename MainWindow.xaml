@@ -12,25 +12,50 @@
         Focusable="True"
         Loaded="Window_Loaded">
 
-    <Grid Margin="10">
+    <Grid Margin="10,10,373,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="151*"/>
-            <RowDefinition Height="12*"/>
+            <RowDefinition Height="Auto" MinHeight="18"/>
+            <RowDefinition Height="134*"/>
+            <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,664" Grid.RowSpan="2"/>
 
-        <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" Margin="0,0,279,0" />
+        <Image x:Name="UploadedImage" Grid.Row="1" Stretch="Uniform" />
 
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,340,0">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <UniformGrid Columns="5" Margin="10" HorizontalAlignment="Stretch">
                 <!-- Slot 1 -->
                 <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot1_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot1_Click" Height="20"/>
+                        <ComboBox x:Name="progList1" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="PROG_00"/>
+                            <ComboBoxItem Content="PROG_01"/>
+                            <ComboBoxItem Content="PROG_02"/>
+                            <ComboBoxItem Content="PROG_03"/>
+                            <ComboBoxItem Content="PROG_04"/>
+                            <ComboBoxItem Content="PROG_05"/>
+                            <ComboBoxItem Content="PROG_06"/>
+                            <ComboBoxItem Content="PROG_07"/>
+                            <ComboBoxItem Content="PROG_08"/>
+                            <ComboBoxItem Content="PROG_09"/>
+                            <ComboBoxItem Content="PROG_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="testList1" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="Test_1"/>
+                            <ComboBoxItem Content="Test_2"/>
+                            <ComboBoxItem Content="Test_3"/>
+                            <ComboBoxItem Content="Test_4"/>
+                            <ComboBoxItem Content="Test_5"/>
+                            <ComboBoxItem Content="Test_6"/>
+                            <ComboBoxItem Content="Test_7"/>
+                            <ComboBoxItem Content="Test_8"/>
+                            <ComboBoxItem Content="Test_9"/>
+                            <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
                         <Image x:Name="ImageSlot1" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
                 </Border>
@@ -40,6 +65,32 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot2_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot2_Click" Height="20"/>
+                        
+                        <ComboBox x:Name="progList2" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="PROG_00"/>
+                            <ComboBoxItem Content="PROG_01"/>
+                            <ComboBoxItem Content="PROG_02"/>
+                            <ComboBoxItem Content="PROG_03"/>
+                            <ComboBoxItem Content="PROG_04"/>
+                            <ComboBoxItem Content="PROG_05"/>
+                            <ComboBoxItem Content="PROG_06"/>
+                            <ComboBoxItem Content="PROG_07"/>
+                            <ComboBoxItem Content="PROG_08"/>
+                            <ComboBoxItem Content="PROG_09"/>
+                            <ComboBoxItem Content="PROG_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="testList2" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="Test_1"/>
+                            <ComboBoxItem Content="Test_2"/>
+                            <ComboBoxItem Content="Test_3"/>
+                            <ComboBoxItem Content="Test_4"/>
+                            <ComboBoxItem Content="Test_5"/>
+                            <ComboBoxItem Content="Test_6"/>
+                            <ComboBoxItem Content="Test_7"/>
+                            <ComboBoxItem Content="Test_8"/>
+                            <ComboBoxItem Content="Test_9"/>
+                            <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
                         <Image x:Name="ImageSlot2" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
                 </Border>
@@ -48,6 +99,32 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot3_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot3_Click" Height="20"/>
+                        
+                        <ComboBox x:Name="progList3" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="PROG_00"/>
+                            <ComboBoxItem Content="PROG_01"/>
+                            <ComboBoxItem Content="PROG_02"/>
+                            <ComboBoxItem Content="PROG_03"/>
+                            <ComboBoxItem Content="PROG_04"/>
+                            <ComboBoxItem Content="PROG_05"/>
+                            <ComboBoxItem Content="PROG_06"/>
+                            <ComboBoxItem Content="PROG_07"/>
+                            <ComboBoxItem Content="PROG_08"/>
+                            <ComboBoxItem Content="PROG_09"/>
+                            <ComboBoxItem Content="PROG_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="testList3" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="Test_1"/>
+                            <ComboBoxItem Content="Test_2"/>
+                            <ComboBoxItem Content="Test_3"/>
+                            <ComboBoxItem Content="Test_4"/>
+                            <ComboBoxItem Content="Test_5"/>
+                            <ComboBoxItem Content="Test_6"/>
+                            <ComboBoxItem Content="Test_7"/>
+                            <ComboBoxItem Content="Test_8"/>
+                            <ComboBoxItem Content="Test_9"/>
+                            <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
                         <Image x:Name="ImageSlot3" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
                 </Border>
@@ -56,6 +133,32 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot4_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot4_Click" Height="20"/>
+                        
+                        <ComboBox x:Name="progList4" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="PROG_00"/>
+                            <ComboBoxItem Content="PROG_01"/>
+                            <ComboBoxItem Content="PROG_02"/>
+                            <ComboBoxItem Content="PROG_03"/>
+                            <ComboBoxItem Content="PROG_04"/>
+                            <ComboBoxItem Content="PROG_05"/>
+                            <ComboBoxItem Content="PROG_06"/>
+                            <ComboBoxItem Content="PROG_07"/>
+                            <ComboBoxItem Content="PROG_08"/>
+                            <ComboBoxItem Content="PROG_09"/>
+                            <ComboBoxItem Content="PROG_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="testList4" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="Test_1"/>
+                            <ComboBoxItem Content="Test_2"/>
+                            <ComboBoxItem Content="Test_3"/>
+                            <ComboBoxItem Content="Test_4"/>
+                            <ComboBoxItem Content="Test_5"/>
+                            <ComboBoxItem Content="Test_6"/>
+                            <ComboBoxItem Content="Test_7"/>
+                            <ComboBoxItem Content="Test_8"/>
+                            <ComboBoxItem Content="Test_9"/>
+                            <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
                         <Image x:Name="ImageSlot4" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
                 </Border>
@@ -64,34 +167,47 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot5_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot5_Click" Height="20"/>
+                        
+                        <ComboBox x:Name="progList5" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="PROG_00"/>
+                            <ComboBoxItem Content="PROG_01"/>
+                            <ComboBoxItem Content="PROG_02"/>
+                            <ComboBoxItem Content="PROG_03"/>
+                            <ComboBoxItem Content="PROG_04"/>
+                            <ComboBoxItem Content="PROG_05"/>
+                            <ComboBoxItem Content="PROG_06"/>
+                            <ComboBoxItem Content="PROG_07"/>
+                            <ComboBoxItem Content="PROG_08"/>
+                            <ComboBoxItem Content="PROG_09"/>
+                            <ComboBoxItem Content="PROG_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="testList5" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                            <ComboBoxItem Content="Test_1"/>
+                            <ComboBoxItem Content="Test_2"/>
+                            <ComboBoxItem Content="Test_3"/>
+                            <ComboBoxItem Content="Test_4"/>
+                            <ComboBoxItem Content="Test_5"/>
+                            <ComboBoxItem Content="Test_6"/>
+                            <ComboBoxItem Content="Test_7"/>
+                            <ComboBoxItem Content="Test_8"/>
+                            <ComboBoxItem Content="Test_9"/>
+                            <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
                         <Image x:Name="ImageSlot5" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
                 </Border>
             </UniformGrid>
         </ScrollViewer>
 
-        <TextBox x:Name="ExtractedTextBox" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,10,0,59" HorizontalAlignment="Right" Width="335"/>
-        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,0,31" Click="csvExport_click" Grid.Row="1" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <ComboBox x:Name="progList" Margin="0,0,146,10" SelectionChanged="ComboBox_SelectionChanged" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom">
-            <ComboBoxItem Content="PROG_00"/>
-            <ComboBoxItem Content="PROG_01"/>
-            <ComboBoxItem Content="PROG_02"/>
-            <ComboBoxItem Content="PROG_03"/>
-            <ComboBoxItem Content="PROG_04"/>
-            <ComboBoxItem Content="PROG_05"/>
-            <ComboBoxItem Content="PROG_06"/>
-            <ComboBoxItem Content="PROG_07"/>
-            <ComboBoxItem Content="PROG_08"/>
-            <ComboBoxItem Content="PROG_09"/>
-            <ComboBoxItem Content="PROG_10"/>
-        </ComboBox>
-        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,144,31" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
-        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,0,0,10" Click="addCsv_click" Grid.Row="2" HorizontalAlignment="Right" Width="130" Height="23" VerticalAlignment="Bottom"/>
-        <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-18,3" Grid.Row="1" VerticalAlignment="Bottom" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="processTxt"  Content="Process Text" Click="processTxt_Click" Margin="0,0,146,0" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
-        <Label x:Name="lastSavedCsv" Content="Last File Saved:" Margin="0,-3,244,0" Grid.RowSpan="2" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="91"/>
-        <Label x:Name="lastSavedCsvName" Content="" Margin="0,-3,0,0" Grid.RowSpan="2" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="244"/>
+        <TextBox x:Name="ExtractedTextBox" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,22,-362,47" HorizontalAlignment="Right" Width="335"/>
+        <Button x:Name="csvExport" Content="Export CSV" Margin="0,0,-362,10" Click="csvExport_click" Grid.Row="1" HorizontalAlignment="Right" Width="148" Height="23" VerticalAlignment="Bottom"/>
+        <Button  Content="Extract Text" Click="ExtractText_Click" Margin="0,0,-177,10" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150"/>
+        <Button x:Name="addCsv" Content="Add to existing CSV" Margin="0,20,-362,0" Click="addCsv_click" Grid.Row="2" HorizontalAlignment="Right" Width="148" Height="23" VerticalAlignment="Top"/>
+        <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-362,0" Grid.Row="2" VerticalAlignment="Top" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
+        <Button x:Name="processTxt"  Content="Process Text" Click="processTxt_Click" Margin="0,20,-177,0" Grid.Row="2" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
+        <Label x:Name="lastSavedCsv" Content="Last File Saved:" Margin="0,9,-118,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="91" Grid.RowSpan="2"/>
+        <Label x:Name="lastSavedCsvName" Content="" Margin="0,9,-362,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="244" Grid.RowSpan="2"/>
+
 
     </Grid>
 
