@@ -90,6 +90,8 @@
         <CheckBox x:Name="lastCsv" Content="Add to last CSV" Margin="0,0,-18,3" Grid.Row="1" VerticalAlignment="Bottom" Checked="CheckBox_Checked" HorizontalAlignment="Right" Width="148" Height="15"/>
         <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="processTxt"  Content="Process Text" Click="processTxt_Click" Margin="0,0,146,0" Grid.Row="1" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="130"/>
+        <Label x:Name="lastSavedCsv" Content="Last File Saved:" Margin="0,-3,244,0" Grid.RowSpan="2" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="91"/>
+        <Label x:Name="lastSavedCsvName" Content="" Margin="0,-3,0,0" Grid.RowSpan="2" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="244"/>
 
     </Grid>
 

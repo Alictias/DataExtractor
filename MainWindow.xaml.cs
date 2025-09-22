@@ -22,6 +22,8 @@ namespace DataExtractor
         private List<string> pastedImagePath = new List<string>();
         private const int MaxImages = 5;
 
+        private string lastSavedCsvPath;
+
 
         private readonly Dictionary<string, string> corrections = new Dictionary<string, string>
         {
@@ -181,8 +183,25 @@ namespace DataExtractor
                 string csvColumns = "Tool, Test, Type, Reading";
                 ExtractedTextBox.Text = csvColumns + Environment.NewLine;
 
+                var validImages = pastedImagePath
+                            .Where(path => !string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                            .ToList();
+
+                if (validImages.Count == 0)
+                {
+                    MessageBox.Show("No valid images to extract. Please paste at least one image.", "Extraction Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    
+                    return;
+                }
+
+
+                if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
+
                 foreach (var imagePath in pastedImagePath)
                 {
+                    if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
+                        continue;
+
                     using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
                     using (var img = Pix.LoadFromFile(imagePath))
                     using (var page = engine.Process(img))
@@ -318,7 +337,6 @@ namespace DataExtractor
                     i += linesUsed; // Skip value lines
                 }
             }
-
             return string.Join(Environment.NewLine, processedResults);
         }
 
@@ -338,7 +356,6 @@ namespace DataExtractor
 
         private void PasteToSlot1_Click(object sender, RoutedEventArgs e)
         {
-
             if (Clipboard.ContainsImage())
             {
                 BitmapSource bitmapSource = Clipboard.GetImage();
@@ -365,13 +382,11 @@ namespace DataExtractor
             {
                 MessageBox.Show("No image found in clipboard.");
             }
-
             //foPasteImageToSlot(0, ImageSlot1);
         }
 
         private void PasteToSlot2_Click(object sender, RoutedEventArgs e)
         {
-
             if (Clipboard.ContainsImage())
             {
                 BitmapSource bitmapSource = Clipboard.GetImage();
@@ -398,12 +413,10 @@ namespace DataExtractor
             {
                 MessageBox.Show("No image found in clipboard.");
             }
-
         }
 
         private void PasteToSlot3_Click(object sender, RoutedEventArgs e)
         {
-
             if (Clipboard.ContainsImage())
             {
                 BitmapSource bitmapSource = Clipboard.GetImage();
@@ -430,7 +443,6 @@ namespace DataExtractor
             {
                 MessageBox.Show("No image found in clipboard.");
             }
-
         }
 
         private void PasteToSlot4_Click(object sender, RoutedEventArgs e)
@@ -462,7 +474,6 @@ namespace DataExtractor
             {
                 MessageBox.Show("No image found in clipboard.");
             }
-
         }
 
         private void PasteToSlot5_Click(object sender, RoutedEventArgs e)
@@ -494,7 +505,6 @@ namespace DataExtractor
             {
                 MessageBox.Show("No image found in clipboard.");
             }
-
         }
 
 
@@ -571,51 +581,108 @@ namespace DataExtractor
 
         public void csvExport_method(string filePath)
         {
-            
+           
             try
             {
                 string selectedProg = (progList.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
-
                 var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                bool appendToLast = lastCsv.IsChecked == true && !string.IsNullOrEmpty(lastSavedCsvPath) && File.Exists(lastSavedCsvPath);
 
-                using (var writer = new StreamWriter(filePath))
+                using (var writer = new StreamWriter(appendToLast ? lastSavedCsvPath : filePath, appendToLast))
                 {
-                    string header = lines[0] + ",PROG";
-                    writer.WriteLine(header);
+                    if (!appendToLast)
+                    {
+                        // Write header only if creating a new file
+                        string header = lines[0] + ",PROG";
+                        writer.WriteLine(header);
+                    }
 
-                    foreach(var line in lines.Skip(1))
+                    foreach (var line in lines.Skip(1))
                     {
                         writer.WriteLine(line + "," + selectedProg);
                     }
                 }
 
-                MessageBox.Show("CSV File exported Successfully!");
+                if (!appendToLast)
+                {
+                    lastSavedCsvPath = filePath; // Save the path for future appends
+                }
+
+                if (!lastCsv.IsChecked == true)
+                {
+                    MessageBox.Show("CSV file exported successfully!");
+                }
+
+                lastSavedCsvName.Content = System.IO.Path.GetFileName(appendToLast ? lastSavedCsvPath : filePath);
             }
+
             catch (Exception ex)
-            {
-                MessageBox.Show("Error exporting CSV: " + ex.Message);
-            }
+                {
+                    MessageBox.Show("Error exporting CSV: " + ex.Message);
+                }
         }
+
+        
 
         private void csvExport_click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Microsoft.Win32.SaveFileDialog
+            if(lastCsv.IsChecked == true && !string.IsNullOrEmpty(lastSavedCsvPath) && File.Exists(lastSavedCsvPath))
             {
-                Title = "Save CSV file",
-                Filter = "CSV files (*.csv)|*.csv",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                FileName = "Exported_csv.csv"
-            };
+                csvExport_method(lastSavedCsvPath);
 
-            if (dialog.ShowDialog() == true)
-            {
-                csvExport_method(dialog.FileName);
+                MessageBox.Show($"File saved as '{System.IO.Path.GetFileName(lastSavedCsvPath)}'","CSV Updated", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            else
+            {
+                var dialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Title = "Save CSV file",
+                    Filter = "CSV files (*.csv)|*.csv",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    FileName = "Exported_csv.csv"
+                };
 
+                if (dialog.ShowDialog() == true)
+                {
+                    csvExport_method(dialog.FileName);
+                }
+            }
         }
 
         private void addCsv_click(object sender, RoutedEventArgs e)
         {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Select CSV file to append",
+                Filter = "CSV files (*.csv)|*.csv",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                string selectedProg = (progList.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                try
+                {
+                    using (var writer = new StreamWriter(dialog.FileName, true))
+                    {
+                        foreach (var line in lines.Skip(1)) // Skip header
+                        {
+                            writer.WriteLine(line + "," + selectedProg);
+                        }
+                    }
+
+                    lastSavedCsvPath = dialog.FileName;
+                    lastSavedCsvName.Content = System.IO.Path.GetFileName(dialog.FileName); // Update the TextBox
+
+                    MessageBox.Show($"Data appended to '{System.IO.Path.GetFileName(dialog.FileName)}'", "CSV Updated", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error appending to CSV: " + ex.Message);
+                }
+            }
 
         }
 
