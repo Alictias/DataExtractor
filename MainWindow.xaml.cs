@@ -27,20 +27,54 @@ namespace DataExtractor
 
         private readonly Dictionary<string, string> corrections = new Dictionary<string, string>
         {
-            { "Tooi", "Tool" }, { "Too0", "Tool" }, { "To00", "Tool" }, { "Tooit", "Tool1" }, { "Tooi1", "Tool" },{"Tool0S","Tool05"},
-            {"Tool", "Tool" }, {"SCREWO1","SCREW01"}, {"Tool03","Tool03"},
-            { "82801", "B2B01" }, { "82802", "B2B02" }, { "82803", "B2B03" }, { "82804", "B2B04" },
+            /*{ "Tooi", "Tool" }, { "Too0", "Tool" }, { "To00", "Tool" }, { "Tooit", "Tool1" }, { "Tooi1", "Tool" },{"Tool0S","Tool05"},
+            {"Tool", "Tool" }, {"SCREWO1","SCREW01"}, {"Tool03","Tool03"},  {"82B01","B2B01"},
+            { "82801", "B2B01" }, { "82802", "B2B02" }, { "82803", "B2B03" }, { "82804", "B2B04" }, { "82B02", "B2B02" },
             { "82805", "B2B05" }, { "82806", "B2B06" }, { "82807", "B2B07" }, { "82808", "B2B08" },
             { "82809", "B2B09" }, { "82810", "B2B10" }, { "82811", "B2B11" },{"82B02_SS_1", "B2B02_SS_1" },{"82B01_H_DIFF","B2B01_H_DIFF"},            
-            { "55", "SS" }, { "HN", "HN" }, { "H_DIFF", "H_DIFF" }, { "Height", "HEIGHT" }, { "Calcul.", "Calculations"},
-            { "step", "STEP" }, { "acstep", "STEP" }, { "Calcul..", "Calculations"}, { "Calcul", "Calculations"}, {"Aver...", "Average"}, {"aver...", "Average"}, 
-            {"Aver..", "Average"}, {"aver..", "Average"},{ "Calcul...", "Calculations"},
-            {"mmy", ""},{"mmp", ""},{"mmg", ""}, {"5CREW","SCREW"}, {"SCREWO3","SCREW03"}, {"5CREWO1", "SCREW01"},
+            { "55", "SS" }, { "HN", "HN" }, { "H_DIFF", "H_DIFF" },{"5CREW","SCREW"}, {"SCREWO3","SCREW03"}, {"5CREWO1", "SCREW01"},
             {"COAXO01", "COAX01"}, {"5CREWO3","5CREW03"}, {"5CREWO01", "SCREW01"}, {"5CREWO02", "SCREW02"},
             { "Too102", "Tool02" }, { "Too103", "Tool03" }, { "Too104", "Tool04" },
             { "Too105", "Tool05" }, { "Too106", "Tool06" }, { "Too107", "Tool07" },
             { "Too108", "Tool08" }, { "8Z801", "B2B01" }, { "88ZO2", "B2B02" },
-            { "SS_Z", "SS_2" }, { "SS_J", "SS_3" }, { "S5", "SS" }
+            { "SS_Z", "SS_2" }, { "SS_J", "SS_3" }, { "S5", "SS" },*/
+            
+            //tool variants
+            { "Tooi", "Tool" }, { "Too0", "Tool" }, { "To00", "Tool" }, { "Tooit", "Tool1" }, { "Tooi1", "Tool" },
+            { "Tool0S", "Tool05" }, { "Tool", "Tool" }, { "Tooll", "Tool" }, { "Toool", "Tool" },
+            { "To0l", "Tool" }, { "T00l", "Tool" }, { "T0ol", "Tool" }, { "ToolO1", "Tool01" }, { "Tool01S", "Tool01" },
+
+            // Specific tool numbers
+            { "Too102", "Tool02" }, { "Too103", "Tool03" }, { "Too104", "Tool04" },
+            { "Too105", "Tool05" }, { "Too106", "Tool06" }, { "Too107", "Tool07" },
+            { "Too108", "Tool08" }, { "Tool03", "Tool03" },
+
+            // B2B variants
+            { "82801", "B2B01" }, { "82802", "B2B02" }, { "82803", "B2B03" }, { "82804", "B2B04" },
+            { "82805", "B2B05" }, { "82806", "B2B06" }, { "82807", "B2B07" }, { "82808", "B2B08" },
+            { "82809", "B2B09" }, { "82810", "B2B10" }, { "82811", "B2B11" },
+            { "82B01", "B2B01" }, { "82B02", "B2B02" }, { "82B03", "B2B03" }, { "82B04", "B2B04" }, { "82B05", "B2B05" },
+            { "8Z801", "B2B01" }, { "8Z802", "B2B02" }, { "88ZO2", "B2B02" }, { "88Z03", "B2B03" },
+
+            // B2B test variants
+            { "82B02_SS_1", "B2B02_SS_1" }, { "82B01_H_DIFF", "B2B01_H_DIFF" },
+
+            // Screw variants
+            { "SCREWO1", "SCREW01" }, { "SCREWO3", "SCREW03" }, { "SCREWOO1", "SCREW01" },
+            { "SCREW1", "SCREW01" }, { "SCREW02A", "SCREW02" },
+            { "5CREW", "SCREW" }, { "5CREWO1", "SCREW01" }, { "5CREWO3", "SCREW03" },
+            { "5CREWO01", "SCREW01" }, { "5CREWO02", "SCREW02" },
+
+            // Coax variants
+            { "COAXO01", "COAX01" },
+
+            // SS variants
+            { "SS_Z", "SS_2" }, { "SS_J", "SS_3" }, { "S5", "SS" }, { "55", "SS" },
+            { "SS1", "SS_1" }, { "SS2", "SS_2" }, { "SS3", "SS_3" }, { "SS4", "SS_4" },
+
+            // HN and H_DIFF variants
+            { "HN", "HN" }, { "H_DIFF", "H_DIFF" }, { "HDIFF", "H_DIFF" }, { "H-DIFF", "H_DIFF" },
+            { "HN1", "HN_1" }, { "HN2", "HN_2" }
 
 
         };
@@ -179,9 +213,17 @@ namespace DataExtractor
         {
             try
             {
-                string tessDataPath = @"C:\Users\jagaminh\Desktop\DataExtractor\packages\Tesseract.5.2.0\tessdata";
-                string csvColumns = "TOOL NO, TOOL NAME, RESULT, TEST, PROGRAM NO., TOOL STATUS, LOW LIMIT, HIGH LIMIT";
-                
+
+                string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+                string tessDataPath = Path.Combine(projectRoot, "packages", "Tesseract.5.2.0", "tessdata");
+
+                if (!Directory.Exists(tessDataPath))
+                {
+                    throw new DirectoryNotFoundException($"Tessdata folder not found at: {tessDataPath}");
+                }
+
+                string csvColumns = "LOOKUP2, LOOKUP1, HEADER IDX, PROGRAM NO, TOOL NO, TOOL NAME, REF_DES, LOW LIMIT, HIGH LIMIT, RESULT, TOOL STATUS, TEST, DEVICE NUMBER";
+
                 string toolStatus = "Pass";
                 ExtractedTextBox.Text = csvColumns + Environment.NewLine;
 
@@ -207,6 +249,7 @@ namespace DataExtractor
 
                     string selectedProg = "UNKNOWN";
                     string selectedTest = "UNKNOWN";
+                    string selectedDevice = "UNKNOWN";
 
                     switch (i)
                     {
@@ -214,19 +257,22 @@ namespace DataExtractor
                             { 
                                 selectedTest = (testList1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 selectedProg = (progList1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedDevice = (deviceList1.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 break;
                             }
 
                         case 1:
-                                {
-                                    selectedTest = (testList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
-                                    selectedProg = (progList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
-                                    break;
-                                }
+                            {
+                                selectedTest = (testList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedProg = (progList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedDevice = (deviceList2.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                break;
+                            }
                         case 2:
                             {
                                 selectedTest = (testList3.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 selectedProg = (progList3.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedDevice = (deviceList3.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 break;
                             }
 
@@ -234,12 +280,14 @@ namespace DataExtractor
                             {
                                 selectedTest = (testList4.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 selectedProg = (progList4.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedDevice = (deviceList4.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 break;
                             }
                         case 4:
                             {
                                 selectedTest = (testList5.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 selectedProg = (progList5.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
+                                selectedDevice = (deviceList5.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "UNKNOWN";
                                 break;
                             }
 
@@ -268,7 +316,7 @@ namespace DataExtractor
                             }
                         } while (iterator.Next(PageIteratorLevel.Word));
 
-                        string processed = ProcessExtractedText(allWords,  selectedProg, selectedTest, toolStatus);
+                        string processed = ProcessExtractedText(allWords,  selectedProg, selectedTest, toolStatus, selectedDevice);
                         ExtractedTextBox.Text += processed + Environment.NewLine + Environment.NewLine;
                     }
                 }
@@ -280,10 +328,12 @@ namespace DataExtractor
         }
 
 
-        private string ProcessExtractedText(string rawText, string selectedProg,string selectedTest, string toolStatus)
+        private string ProcessExtractedText(string rawText, string selectedProg,string selectedTest, string toolStatus, string selectedDevice)
         {
             var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var processedResults = new List<string>();
+
+            
 
             for (int i = 0; i < lines.Length - 1; i++)
             {
@@ -334,6 +384,7 @@ namespace DataExtractor
                         }
 
                         Match match = Regex.Match(candidate, @"-?\d+\.\d+");
+
                         if (match.Success)
                         {
                             value = match.Value;
@@ -343,42 +394,27 @@ namespace DataExtractor
                     }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///
-                    string testType = "[UNKNOWN TYPE]";
-                    Match typeMatch = Regex.Match(toolName, @"\((.*?)\)");
-                    if (typeMatch.Success)
-                    {
-                        testType = typeMatch.Groups[1].Value;
+                    int testNum = int.Parse(Regex.Match(selectedTest, @"\d+").Value);
+                    int deviceNum = int.Parse(selectedDevice);
+                    int headerIdx = testNum + 10 * (deviceNum - 1);
 
-                        // Normalize test type if it starts with "Calcu"
-                        if (Regex.IsMatch(testType, @"^Calcu", RegexOptions.IgnoreCase))
-                        {
-                            testType = "Calculations";
-                        }
-                        else if (Regex.IsMatch(testType, @"^Step", RegexOptions.IgnoreCase))
-                        {
-                            testType = "Step";
-                        }
-                        else if (Regex.IsMatch(testType, @"^Height", RegexOptions.IgnoreCase))
-                        {
-                            testType = "Height";
-                        }
-                        else if (Regex.IsMatch(testType, @"^Average", RegexOptions.IgnoreCase))
-                        {
-                            testType = "Average";
-                        }
 
-                        // Remove the type from the test name
-                        toolName = Regex.Replace(toolName, @"\s*\(.*?\)", "");
-                    }
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///
+                    toolName = Regex.Replace(toolName, @"\(.*", "").Trim();// esse \( significa literalmente '(', o '.*' pega qualquer valor. então estou procurando
+                    // por qualquer coisa depois de toolname que comece com (, que é o que mais da problema na hora de passar
+                    //tool = Regex.Replace(tool, @"Tool", "").Trim();
+                    tool = Regex.Match(tool, @"\d+").Value;
 
                     int ll = -20;
                     int ul = 20;
 
-                    // string csvColumns = "TOOL NO, TOOL NAME, TYPE, RESULT, TEST, PROGRAM NO., TOOL STATUS, LOW LIMIT, HIGH LIMIT";
-                    processedResults.Add($"{tool}, {toolName}, {value}, {selectedTest}, {selectedProg}, {toolStatus}, {ll}, {ul}");
+                    string lookUp2 = $"{headerIdx}_{toolName}_{toolStatus}";
+                    string lookUp1 = $"{headerIdx}{toolName}";
 
+                    // string csvColumns = "TOOL NO, TOOL NAME, RESULT, TEST, PROGRAM NO., TOOL STATUS, LOW LIMIT, HIGH LIMIT";
+                    //processedResults.Add($"{tool}, {toolName}, {value}, {selectedTest}, {selectedProg}, {toolStatus}, {ll}, {ul}");
+                    processedResults.Add($"{lookUp2},{lookUp1},{headerIdx}, {selectedProg},{tool}, {toolName}, {toolName}, {ll}, {ul},{value}, {toolStatus},{selectedTest}, {selectedDevice}");
 
 
 
@@ -739,7 +775,28 @@ namespace DataExtractor
 
         private void processTxt_Click(object sender, RoutedEventArgs e)
         {
+            var lines = ExtractedTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);//separar em linhas o conteudo dentro do textbox
+            var cleanedLines = new List<string>();//armazena uma lista contendo as linhsa pos processamento
 
+            foreach ( var line in lines)
+            {
+                var parts = line.Split(',');//separa baseado nas virgulas
+
+                if (parts.Length >=2)//caso tenha mais de duas colunas
+                {
+                    parts[1]= Regex.Replace(parts[1], @"\(.*", "").Trim();//remove caso tenha parenteses
+
+                    parts[1] = Regex.Replace(parts[1], @"\b\w+\b", match =>
+                    {
+                        var word = match.Value;
+                        return corrections.ContainsKey(word) ? corrections[word] : word;
+                    });
+
+                }
+                cleanedLines.Add(string.Join(",", parts));
+            }
+
+            ExtractedTextBox.Text = string.Join(Environment.NewLine, cleanedLines);
         }
     }
 }

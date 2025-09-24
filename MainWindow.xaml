@@ -31,7 +31,8 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot1_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot1_Click" Height="20"/>
-                        <ComboBox x:Name="progList1" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="progList1" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select PROG</ComboBoxItem>
                             <ComboBoxItem Content="PROG_00"/>
                             <ComboBoxItem Content="PROG_01"/>
                             <ComboBoxItem Content="PROG_02"/>
@@ -44,7 +45,8 @@
                             <ComboBoxItem Content="PROG_09"/>
                             <ComboBoxItem Content="PROG_10"/>
                         </ComboBox>
-                        <ComboBox x:Name="testList1" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="testList1" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Test</ComboBoxItem>
                             <ComboBoxItem Content="Test_1"/>
                             <ComboBoxItem Content="Test_2"/>
                             <ComboBoxItem Content="Test_3"/>
@@ -55,6 +57,19 @@
                             <ComboBoxItem Content="Test_8"/>
                             <ComboBoxItem Content="Test_9"/>
                             <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="deviceList1" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Device</ComboBoxItem>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
                         </ComboBox>
                         <Image x:Name="ImageSlot1" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
@@ -65,8 +80,9 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot2_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot2_Click" Height="20"/>
-                        
-                        <ComboBox x:Name="progList2" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+
+                        <ComboBox x:Name="progList2" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select PROG</ComboBoxItem>
                             <ComboBoxItem Content="PROG_00"/>
                             <ComboBoxItem Content="PROG_01"/>
                             <ComboBoxItem Content="PROG_02"/>
@@ -79,7 +95,8 @@
                             <ComboBoxItem Content="PROG_09"/>
                             <ComboBoxItem Content="PROG_10"/>
                         </ComboBox>
-                        <ComboBox x:Name="testList2" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="testList2" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Test</ComboBoxItem>
                             <ComboBoxItem Content="Test_1"/>
                             <ComboBoxItem Content="Test_2"/>
                             <ComboBoxItem Content="Test_3"/>
@@ -90,6 +107,19 @@
                             <ComboBoxItem Content="Test_8"/>
                             <ComboBoxItem Content="Test_9"/>
                             <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="deviceList2" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Device</ComboBoxItem>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
                         </ComboBox>
                         <Image x:Name="ImageSlot2" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
@@ -99,8 +129,9 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot3_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot3_Click" Height="20"/>
-                        
-                        <ComboBox x:Name="progList3" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+
+                        <ComboBox x:Name="progList3" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select PROG</ComboBoxItem>
                             <ComboBoxItem Content="PROG_00"/>
                             <ComboBoxItem Content="PROG_01"/>
                             <ComboBoxItem Content="PROG_02"/>
@@ -113,7 +144,8 @@
                             <ComboBoxItem Content="PROG_09"/>
                             <ComboBoxItem Content="PROG_10"/>
                         </ComboBox>
-                        <ComboBox x:Name="testList3" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="testList3" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Test</ComboBoxItem>
                             <ComboBoxItem Content="Test_1"/>
                             <ComboBoxItem Content="Test_2"/>
                             <ComboBoxItem Content="Test_3"/>
@@ -124,6 +156,19 @@
                             <ComboBoxItem Content="Test_8"/>
                             <ComboBoxItem Content="Test_9"/>
                             <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="deviceList3" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Device</ComboBoxItem>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
                         </ComboBox>
                         <Image x:Name="ImageSlot3" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
@@ -133,8 +178,9 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot4_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot4_Click" Height="20"/>
-                        
-                        <ComboBox x:Name="progList4" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+
+                        <ComboBox x:Name="progList4" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select PROG</ComboBoxItem>
                             <ComboBoxItem Content="PROG_00"/>
                             <ComboBoxItem Content="PROG_01"/>
                             <ComboBoxItem Content="PROG_02"/>
@@ -147,7 +193,8 @@
                             <ComboBoxItem Content="PROG_09"/>
                             <ComboBoxItem Content="PROG_10"/>
                         </ComboBox>
-                        <ComboBox x:Name="testList4" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="testList4" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Test</ComboBoxItem>
                             <ComboBoxItem Content="Test_1"/>
                             <ComboBoxItem Content="Test_2"/>
                             <ComboBoxItem Content="Test_3"/>
@@ -158,6 +205,19 @@
                             <ComboBoxItem Content="Test_8"/>
                             <ComboBoxItem Content="Test_9"/>
                             <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="deviceList4" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Device</ComboBoxItem>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
                         </ComboBox>
                         <Image x:Name="ImageSlot4" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
@@ -167,8 +227,9 @@
                     <StackPanel>
                         <Button Content="Clear" Click="ClearSlot5_Click" Height="20"/>
                         <Button Content="Paste Here" Click="PasteToSlot5_Click" Height="20"/>
-                        
-                        <ComboBox x:Name="progList5" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+
+                        <ComboBox x:Name="progList5" SelectionChanged="ComboBox_SelectionChanged" Height="20"  SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False"> Select PROG </ComboBoxItem>
                             <ComboBoxItem Content="PROG_00"/>
                             <ComboBoxItem Content="PROG_01"/>
                             <ComboBoxItem Content="PROG_02"/>
@@ -181,7 +242,8 @@
                             <ComboBoxItem Content="PROG_09"/>
                             <ComboBoxItem Content="PROG_10"/>
                         </ComboBox>
-                        <ComboBox x:Name="testList5" SelectionChanged="ComboBox_SelectionChanged" Height="20">
+                        <ComboBox x:Name="testList5" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Test </ComboBoxItem>
                             <ComboBoxItem Content="Test_1"/>
                             <ComboBoxItem Content="Test_2"/>
                             <ComboBoxItem Content="Test_3"/>
@@ -192,6 +254,19 @@
                             <ComboBoxItem Content="Test_8"/>
                             <ComboBoxItem Content="Test_9"/>
                             <ComboBoxItem Content="Test_10"/>
+                        </ComboBox>
+                        <ComboBox x:Name="deviceList5" SelectionChanged="ComboBox_SelectionChanged" Height="20" SelectedIndex="0" HorizontalContentAlignment="Center">
+                            <ComboBoxItem IsEnabled="False">Select Device</ComboBoxItem>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
                         </ComboBox>
                         <Image x:Name="ImageSlot5" Stretch="Uniform" Margin="10"/>
                     </StackPanel>
